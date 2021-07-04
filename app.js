@@ -27,6 +27,6 @@ app.use(express.static('public'));
 app.use(methodOverride('_method'));
 const facebookRoutes = require('./routes/facebook');
 app.use(facebookRoutes);
-app.listen(8080, ()=> {
-  console.log('Server is started');
+app.listen(process.env.PORT || 5000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
