@@ -268,8 +268,8 @@ var htt =fetch('https://graph.facebook.com/v10.0/'+pageid+'/insights?access_toke
 var obj = JSON.parse(text);
 //var obj = JSON.stringify(text);
 var values = obj.data ;
-res.json(obj.data);
-//res.render('table', { data: values});
+//res.json(obj.data);
+res.render('table', { data: values});
 })
 
 .catch(err => {
@@ -295,33 +295,10 @@ router.get('/admins', function(req, res){
 
 });
 
-//backend-new
 
-router.get('/info-ranking', function(req, res){
-  var htt =fetch('https://graph.facebook.com/'+pageid+'?fields=access_token&access_token=' + tokken)
-  .then(res => res.json())
-  .then((json)=>{
-  thenewfbtoken = json.access_token;
-  
-  var rank =fetch('https://graph.facebook.com/v10.0/'+pageid+'/posts?fields=followers_count,full_picture,created_time,shares,likes.summary(true),comments.limit(0).summary(true).limit(0),insights.metric(post_reactions_like_total,post_reactions_love_total,post_reactions_wow_total,post_reactions_haha_total,post_reactions_sorry_total,post_reactions_anger_total,post_clicks,post_engaged_users,post_impressions_unique)&access_token='+thenewfbtoken+'&limit=100')
- .then(res => res.json())
- .then((json)=>{
-console.log(json.data[0])
-res.json(json);
-
-
-//console.log(tabp.sort(function (a, b) {
- // return b.post_impr - a.post_impr;
-//}))
-
-});
-});
-});
-//endback-end
 function ensureAuthenticated(req, res, next) {
  // console.log('the new req' + req);
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login')
 }
-
 module.exports = router;
