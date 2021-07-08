@@ -5,8 +5,8 @@ module.exports = {
    */
 
   //  FB params
-  facebook_api_key: "478689052827815",
-  facebook_api_secret: "86a06773e8fc0e45a3a54571d740f49a",
+  facebook_api_key: "1358907234502091",
+  facebook_api_secret: "a13091ffa5733740b631057fa6f325b1",
 
 
   callback_url: "https://projectfbins.herokuapp.com/auth/facebook/callback",
