@@ -268,8 +268,8 @@ var htt =fetch('https://graph.facebook.com/v10.0/'+pageid+'/insights?access_toke
 var obj = JSON.parse(text);
 //var obj = JSON.stringify(text);
 var values = obj.data ;
-//res.json(obj.data);
-res.render('table', { data: values});
+res.json(obj.data);
+//res.render('table', { data: values});
 })
 
 .catch(err => {
