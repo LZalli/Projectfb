@@ -295,7 +295,20 @@ router.get('/admins', function(req, res){
  });
 
 });
+router.get('/user', function(req,res,next){
+  const admin = {
+    
+    user: "hash",
+    email: "har@gmail.com",
+    tel:"23445",
+    password: "hash",
+   
 
+};
+
+
+admin.save()
+})
 
 function ensureAuthenticated(req, res, next) {
  // console.log('the new req' + req);
