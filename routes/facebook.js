@@ -20,19 +20,6 @@ const router = express.Router();
     password : '',
     database : 'nodelogin'
   });
-  router.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PATCH, DELETE, OPTIONS,PUT"
-    );
-    next();
-  });
-  
   router.use(session({
     secret: 'secret',
     resave: true,
@@ -282,6 +269,7 @@ var obj = JSON.parse(text);
 //var obj = JSON.stringify(text);
 var values = obj.data ;
 res.json(obj.data);
+values.save();
 //res.render('table', { data: values});
 })
 
