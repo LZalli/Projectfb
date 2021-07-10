@@ -6,6 +6,10 @@ const express         =     require('express')
   , bodyParser        =     require('body-parser')
   , config            =     require('../configuration/config')
   , mysql             =     require('mysql');
+var MongoClient = require('mongodb').MongoClient;
+var url = 'mongodb+srv://Laith:Azer1234@cluster0.9pyqc.mongodb.net/Data';
+
+
 
 const router = express.Router();
   var path = require('path');
@@ -269,8 +273,16 @@ var obj = JSON.parse(text);
 //var obj = JSON.stringify(text);
 var values = obj.data ;
 res.json(obj.data);
-values.save();
 //res.render('table', { data: values});
+MongoClient.connect('mongodb+srv://Laith:Azer1234@cluster0.9pyqc.mongodb.net/Data', (err, client) => {
+  // Client returned
+  var db = client.db('mytestingdb');
+  db.collection("facebook").insertMany(values, function(err, res) {  
+    if (err) throw err;  
+    console.log("1 record inserted");  
+    client.close();  
+    });  
+})
 })
 
 .catch(err => {
@@ -278,7 +290,6 @@ values.save();
 });
 });
 });
-
 router.get('/admins', function(req, res){
   var mynewlist= [] ;
   var gh =fetch('https://graph.facebook.com/me?fields=accounts&access_token='+ tokken)
@@ -296,18 +307,26 @@ router.get('/admins', function(req, res){
 
 });
 router.get('/user', function(req,res,next){
-  const admin = {
-    
-    user: "hash",
-    email: "har@gmail.com",
-    tel:"23445",
-    password: "hash",
-   
+/**MongoClient.connect(url, function(err, db) {  
+  if (err) throw err;  
+  var myobj = { name: "Ajeet Kumar", age: "28", address: "Delhi" };  
+  db.collection("employees").insertOne(myobj, function(err, res) {  
+  if (err) throw err;  
+  console.log("1 record inserted");  
+  db.close();  
+  });  
+  });  **/
+  MongoClient.connect('mongodb+srv://Laith:Azer1234@cluster0.9pyqc.mongodb.net/Data', (err, client) => {
+  // Client returned
+  var db = client.db('mytestingdb');
+  var myobj = { name: "Ajeet Kumar", age: "28", address: "Delhi" };  
 
-};
-
-
-admin.save()
+  db.collection("employees").insertOne(myobj, function(err, res) {  
+    if (err) throw err;  
+    console.log("1 record inserted");  
+    client.close();  
+    });  
+});
 })
 
 function ensureAuthenticated(req, res, next) {
