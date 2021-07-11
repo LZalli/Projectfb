@@ -29,6 +29,18 @@ const router = express.Router();
     resave: true,
     saveUninitialized: true
   }));
+  router.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PATCH, DELETE, OPTIONS,PUT"
+    );
+    next();
+  });
   router.use(bodyParser.urlencoded({extended : true}));
   router.use(bodyParser.json());
   router.get('/enter', function(request, response) {
@@ -329,6 +341,64 @@ router.get('/user', function(req,res,next){
 });
 })
 
+
+//end api facebook DB
+router.get('/apifb', function(req,res,next){
+  
+    MongoClient.connect('mongodb+srv://Laith:Azer1234@cluster0.9pyqc.mongodb.net/Data', (err, client) => {
+    // Client returned
+    var db = client.db('mytestingdb');
+  
+    db.collection('facebook').find({}).toArray(function(err, docs) {
+      // Print the documents returned
+      res.json(docs);
+
+      docs.forEach(function(doc) {
+        console.log(doc.name);
+      });
+      // Close the DB
+      client.close();
+
+      });
+  });
+
+  })
+//end-of api facebook DB
+//post formFacebook api 
+router.post('/formfb' , (req,res) => {
+  console.log("ffffffffffffffffffffffff");
+  var pageid = req.body.pageid;
+  console.log(pageid);
+var htt =fetch('https://graph.facebook.com/'+pageid+'?fields=access_token&access_token=' + tokken)
+.then(res => res.json())
+.then((json)=>{
+thenewfbtoken = json.access_token;
+
+//console.log('tokenp'+thenewfbtoken);
+ // console.log('tokenp'+thenewfbtoken)
+var startdate = req.body.startdate;
+  var enddate = req.body.enddate;
+var htt =fetch('https://graph.facebook.com/v10.0/'+pageid+'/insights?access_token='+thenewfbtoken+'&pretty=0&metric=page_impressions,page_views_total,page_impressions_unique,page_total_actions,page_engaged_users,page_fans,page_fan_adds_unique,page_fans,page_actions_post_reactions_like_total,page_actions_post_reactions_love_total,	page_actions_post_reactions_wow_total,	page_actions_post_reactions_haha_total,	page_actions_post_reactions_sorry_total,page_actions_post_reactions_anger_total&since='+startdate+'&until='+enddate+'&period=day')
+
+.then(res => res.text())
+// .then(text => res.json(text)) 
+.then(text => {
+  // console.log(text);
+var obj = JSON.parse(text);
+//var obj = JSON.stringify(text);
+console.log(obj);
+var values = obj.data ;
+res.json(obj.data);
+//res.render('table', { data: values});
+
+})
+
+.catch(err => {
+  console.log(err);
+});
+});
+});
+//endpost from facebookapi
 function ensureAuthenticated(req, res, next) {
  // console.log('the new req' + req);
   if (req.isAuthenticated()) { return next(); }
